@@ -14,7 +14,13 @@ class App < Gosu::Window
     @left_y = self.height / 2 - 100
     @right_x = self.width - 80
     @right_y = self.height / 2 -100
+    @width = 30
+    @height = 150
     @speed = 5
+    @boost_speed = 10
+    @dbg_font = Gosu::Font.new(15)
+    @left_shift = false
+    @right_shift = false
     @right_btn_down = false
     @right_btn_up = false
     @left_btn_down = false
@@ -22,31 +28,42 @@ class App < Gosu::Window
   end
 
   def draw()
-    @paddle_1.draw(@left_x, @left_y, 30, 150, Gosu::Color::WHITE, 2)
-    @paddle_2.draw(@right_x, @right_y, 30, 150, Gosu::Color::WHITE, 2)
+    @paddle_1.draw(@left_x, @left_y, @width, @height, Gosu::Color::WHITE, 2)
+    @paddle_2.draw(@right_x, @right_y, @width, @height, Gosu::Color::WHITE, 2)
+    @dbg_font.draw("lX: #{@left_x} lY: #{@left_y}\nrX: #{@right_x} rY: #{@right_y}", 700,300, 3, 2.0, 2.0, Gosu::Color::WHITE)
   end
   def update()
 
-    # if @right_btn_down
-    #   @right_y += @speed
-    # elsif @right_btn_up
-    #   @right_y -= @speed
-    # elsif @left_btn_down
-    #   @left_y += @speed
-    # elsif @left_btn_up
-    #   @left_y -= @speed
-    # end
     if @right_btn_down && !@right_btn_up
-      @right_y += @speed
+      if @right_shift
+        @right_y += @speed + @boost_speed
+      else
+        @right_y += @speed
+      end
+
     elsif @right_btn_up && !@right_btn_down
-      @right_y -= @speed
+      if @right_shift
+        @right_y -= @speed + @boost_speed
+      else
+        @right_y -= @speed
+      end
     end
 
     if @left_btn_down && !@left_btn_up
-      @left_y += @speed
+      if @left_shift
+        @left_y += @speed + @boost_speed
+      else
+        @left_y += @speed
+      end
+
     elsif @left_btn_up && !@left_btn_down
-      @left_y -= @speed
+      if @left_shift
+        @left_y -= @speed + @boost_speed
+      else
+        @left_y -= @speed
+      end
     end
+
 
   end
 
@@ -63,6 +80,10 @@ class App < Gosu::Window
       @left_btn_up = true
     elsif id == Gosu::KbS
       @left_btn_down = true
+    elsif id == Gosu::KbLeftShift
+      @left_shift = true
+    elsif id == Gosu::KbRightShift
+      @right_shift = true
     end
   end
 
@@ -75,6 +96,10 @@ class App < Gosu::Window
       @left_btn_up = false
     elsif id == Gosu::KbS
       @left_btn_down = false
+    elsif id == Gosu::KbLeftShift
+      @left_shift = false
+    elsif id == Gosu::KbRightShift
+      @right_shift = false
     end
   end
 end
