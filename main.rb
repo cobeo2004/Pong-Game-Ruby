@@ -10,6 +10,7 @@ class App < Gosu::Window
     self.caption = title
     @paddle_1 = Paddle.new()
     @paddle_2 = Paddle.new()
+    @ball = Ball.new(15)
     @left_x = 40
     @left_y = self.height / 2 - 100
     @right_x = self.width - 80
@@ -30,6 +31,7 @@ class App < Gosu::Window
   def draw()
     @paddle_1.draw(@left_x, @left_y, @width, @height, Gosu::Color::WHITE, 2)
     @paddle_2.draw(@right_x, @right_y, @width, @height, Gosu::Color::WHITE, 2)
+    @ball.draw(self.width / 2, self.height / 2, 2, 1.0, 1.0, Gosu::Color::WHITE)
     @dbg_font.draw("lX: #{@left_x} lY: #{@left_y}\nrX: #{@right_x} rY: #{@right_y}", 700,300, 3, 2.0, 2.0, Gosu::Color::WHITE)
   end
   def update()
@@ -64,7 +66,10 @@ class App < Gosu::Window
       end
     end
 
-
+    @right_y = 0 if @right_y <= 0
+    @right_y = self.height - @height if @right_y >= self.height - @height
+    @left_y = 0 if @left_y <= 0
+    @left_y = self.height - @height if @left_y >= self.height - @height
   end
 
   def needs_cursor?()
