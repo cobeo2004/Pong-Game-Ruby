@@ -3,7 +3,6 @@ require 'rubygems'
 require './ball'
 require './paddle'
 
-
 class App < Gosu::Window
   def initialize(width = 1024, height = 768, is_full_screen = false, title = "Pong game")
     super(width, height, is_full_screen)
@@ -20,12 +19,16 @@ class App < Gosu::Window
     @speed = 5
     @boost_speed = 10
     @dbg_font = Gosu::Font.new(15)
+    @score_font = Gosu::Font.new(70)
     @left_shift = false
     @right_shift = false
     @right_btn_down = false
     @right_btn_up = false
     @left_btn_down = false
     @left_btn_up = false
+
+    @score_1 = 0
+    @score_2 = 0
   end
 
   def draw()
@@ -33,6 +36,8 @@ class App < Gosu::Window
     @paddle_2.draw(@right_x, @right_y, @width, @height, Gosu::Color::WHITE, 2)
     @ball.draw(self.width / 2, self.height / 2, 2, 1.0, 1.0, Gosu::Color::WHITE)
     @dbg_font.draw("lX: #{@left_x} lY: #{@left_y}\nrX: #{@right_x} rY: #{@right_y}", 700,300, 3, 2.0, 2.0, Gosu::Color::WHITE)
+    @score_font.draw("#{@score_1}", 250, 30, 2, 2.0, 2.0, Gosu::Color::WHITE)
+    @score_font.draw("#{@score_2}", 700, 30, 2, 2.0, 2.0, Gosu::Color::WHITE)
   end
   def update()
 
@@ -89,6 +94,8 @@ class App < Gosu::Window
       @left_shift = true
     elsif id == Gosu::KbRightShift
       @right_shift = true
+    elsif id == Gosu::KbEscape
+      close()
     end
   end
 
