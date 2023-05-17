@@ -1,20 +1,7 @@
 require 'gosu'
 require 'rubygems'
-
-class Paddle
-  attr_accessor :is_colliding
-
-  def initialize()
-  end
-
-  def draw(x, y, width, height, color, zOrder)
-    Gosu.draw_rect(x, y, width, height, color, zOrder)
-  end
-end
-
-class Ball
-
-end
+require './ball'
+require './paddle'
 
 
 class App < Gosu::Window
